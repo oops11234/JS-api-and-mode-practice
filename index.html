@@ -36,15 +36,20 @@
             <option value="" disabled selected>請選擇鄉鎮區...</option>
           </select>
         </div>
-        <div class="nav__modeSwitch">
+        <div class="nav__mode">
           <span class="nav__switchDesc">檢視模式 :</span>
-          <button class="nav__switchBtn js-nav__switchBtn" type="button"><i class="fa-solid fa-list"></i></button>
-          <button class="nav__switchBtn" type="button"><i class="fa-solid fa-align-justify"></i></button>
-          <button class="nav__switchBtn" type="button"><i class="fa-solid fa-border-all"></i></button>
+          <div class="nav__modeSwitch" id="ModeSwitch">
+            <button class="nav__switchBtn js-nav__switchBtn" type="button" data-mode="0">
+              <i class="fa-solid fa-list"></i></button>
+            <button class="nav__switchBtn" type="button" data-mode="1">
+              <i class="fa-solid fa-align-justify"></i></button>
+            <button class="nav__switchBtn" type="button" data-mode="2">
+              <i class="fa-solid fa-border-all"></i></button>
+          </div>
         </div>
       </nav>
-      <div class="content" id="Content">
-        <table class="resTable">
+      <div class="content grid" id="Content">
+        <!-- <table class="resTable">
           <thead class="resTable__hd">
             <tr class="resTable__title">
               <th class="resTable__th">編號</th>
@@ -56,9 +61,13 @@
           </thead>
           <tbody class="resTable__content" id="ResTableContent">
           </tbody>
-        </table>
+        </table> -->
       </div>
-      <nav class="btnList" id="BtnList"></nav>
+      <nav class="pageList">
+        <p class="pageList__text">美食頁次 <span class="pageList__number" id="PageNum">4/14</span></p>
+        <div class="pageList__content" id="PageListContent">
+        </div>
+      </nav>
     </main>
     <aside class="sideBar">
       <figure class="file">
@@ -73,7 +82,10 @@
     </aside>
   </div>
   <footer class="footer">
-
+    <div class="container mx-auto">
+      <h3 class="footer__title">CMoney 全曜財經資訊</h3>
+      <p class="footer__desc">資料來源 : <span class="footer__info">政府資料開放平台</span></p>
+    </div>
   </footer>
 
 

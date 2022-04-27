@@ -21,7 +21,7 @@ body {
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 30px 30px;
+  gap: 35px 35px;
 }
 
 .row {
@@ -35,16 +35,21 @@ body {
 }
 
 .main {
-  width: 74.2%;
+  width: 74.1%;
 }
 
 .sideBar {
-  width: 25.8%;
-  padding-right: 30px;
+  width: 25.9%;
   padding-left: 30px;
+  box-sizing: border-box;
 }
 
-/* .footer {} */
+.footer {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #c7cacd;
+  background-color: #989898;
+}
 
 /* --- Modules --- */
 .loadingPage {
@@ -89,6 +94,10 @@ body {
 
 .nav__select+.nav__select {
   margin-left: 5px;
+}
+
+.nav__mode {
+  display: flex;
 }
 
 .nav__switchDesc {
@@ -137,10 +146,6 @@ body {
 
 .res__fig--cover {
   background-color: rgba(14, 13, 13, 0.158);
-}
-
-.res__fig--coverLg {
-  background-image: linear-gradient(transparent 70%, rgba(14, 13, 13, 0.877));
 }
 
 .res__img {
@@ -202,18 +207,13 @@ body {
 }
 
 .res__paragh {
-  /* display: -webkit-box; */
   font-size: 15px;
   color: #636161;
-  /* text-overflow: none; */
-  /* line-height: 1.5; */
-  /* overflow: hidden; */
-  /* -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical; */
 }
 
-/* table */
+/* Table Mode */
 .resTable {
+  display: none;
   width: 100%;
 }
 
@@ -231,12 +231,8 @@ body {
   white-space: nowrap;
 }
 
-.resTable__row {
-  height: 75px;
-}
-
 .resTable__row--stripe {
-  background-color: #f9f9f9;
+  background-color: #fdfdfdea;
 }
 
 .resTable__row:hover {
@@ -244,47 +240,118 @@ body {
 }
 
 .resTable__td {
-  position: relative;
-  padding: 5px 10px;
-  height: 70px;
+  padding: 10px 15px;
   font-size: 15px;
   border: 1px solid #dfdddd;
   vertical-align: middle;
   box-sizing: border-box;
 }
 
-.resTable__link {
-  color: #3494c4;
+.resTable__td--minWidth {
+  min-width: 100px;
 }
 
-.resTable__link:visited {
-  color: #247baa;
+.resTable__td--textRight {
+  text-align: right;
 }
 
-.resTable__td--order {
-  font-size: 13px;
-  color: #a4a4a7;
+.resTable__td--noWrap {
+  white-space: nowrap;
 }
 
-.resTable__td--img {
+.resTable__td--text {
   position: relative;
 }
 
-.resTable__td--fixed {
-  width: 175px;
+.resTable__hideText {
+  position: absolute;
+  top: 32px;
+  left: 22px;
+  padding-right: 5px;
+  padding-left: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  background: linear-gradient(#f0f1f3, #e9eef5);
+  border: 1px solid rgba(0, 0, 0, 0.596);
+  border-radius: 2px;
+  box-shadow: 1px 1px 2px 1px rgba(59, 59, 59, 0.575);
 }
 
-.resTable__td--textCenter {
-  text-align: center;
+/* Card Mode */
+.cardRes {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background-image: linear-gradient(transparent 70%, rgba(14, 13, 13, 0.877));
 }
 
-.resTable__img {
-  vertical-align: middle;
+.cardRes__img {
+  width: 100%;
+  mix-blend-mode: multiply;
+  object-fit: cover;
+  transition: transform 1s;
 }
 
-.resTable__img--small {
-  width: 80px;
-  height: auto;
+.cardRes:hover .cardRes__img {
+  transform: scale(1.05);
+}
+
+.cardRes__text {
+  position: absolute;
+  top: 150px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: #fff;
+  transition: top 1s;
+}
+
+.cardRes:hover .cardRes__text {
+  top: 80px;
+}
+
+.cardRes__flag {
+  padding: 2px 5px;
+  font-size: 12px;
+  color: #fff;
+  background-color: #00a2d2;
+}
+
+.cardRes__info {
+  display: flex;
+  align-items: center;
+}
+
+.cardRes__desc {
+  padding-left: 5px;
+  font-size: 13px;
+}
+
+.cardRes__desc--italic {
+  font-style: italic;
+}
+
+
+.cardRes__title {
+  padding-bottom: 20px;
+}
+
+.cardRes__title::after {
+  content: '';
+  position: absolute;
+  top: 52px;
+  left: 15px;
+  width: 48px;
+  height: 3px;
+  background-color: #fff;
+}
+
+.cardRes__paragh {
+  display: -webkit-box;
+  font-size: 14px;
+  text-overflow: none;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 /* ad */
@@ -305,4 +372,40 @@ body {
   width: 100%;
   height: auto;
   vertical-align: middle;
+}
+
+.pageList {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.pageList__btn {
+  padding: 7px 13px;
+  font-size: 16px;
+  margin-left: 5px;
+  color: #aaafae;
+  border: none;
+  background-color: #dcdcdc;
+  cursor: pointer;
+}
+
+.js-pageList__btn {
+  color: #fff;
+  background-color: #00a2d2;
+}
+
+.footer__title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.footer__desc {
+  font-size: 14px;
+}
+
+.footer__info {
+  color: #fff;
 }
