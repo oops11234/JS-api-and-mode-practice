@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="地方農村餐廳介紹">
+  <meta name="keywords" content="地方美食 廣告資訊">
+  <title>農村入口網2</title>
+  <script src="https://kit.fontawesome.com/bac0c39dfe.js"></script>
+  <link rel="icon" href="./favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="./style/main.css">
+  <!-- <link rel="stylesheet" href="./style/phone.css" media="screen and (max-width: 414px)"> -->
+</head>
+
+<body>
+  <div class="loadingPage" id="LoadingPage">
+    <img src="./images/loading.gif" alt="loading">
+    <p>資料下載中...請稍後!</p>
+  </div>
+  <header class="hd">
+    <h1 class="hd__title">
+      農村地方美食小吃特色料理
+    </h1>
+  </header>
+  <div class="container row mx-auto">
+    <main class="main">
+      <nav class="nav">
+        <div class="nav__selector">
+          <select class="nav__select" id="CountySelector">
+            <option value="" disabled selected>請選擇行政區域...</option>
+          </select>
+          <select class="nav__select" id="TownSelector">
+            <option value="" disabled selected>請選擇鄉鎮區...</option>
+          </select>
+        </div>
+        <div class="nav__modeSwitch">
+          <span class="nav__switchDesc">檢視模式 :</span>
+          <button class="nav__switchBtn js-nav__switchBtn" type="button"><i class="fa-solid fa-list"></i></button>
+          <button class="nav__switchBtn" type="button"><i class="fa-solid fa-align-justify"></i></button>
+          <button class="nav__switchBtn" type="button"><i class="fa-solid fa-border-all"></i></button>
+        </div>
+      </nav>
+      <div class="content" id="Content">
+        <table class="resTable">
+          <thead class="resTable__hd">
+            <tr class="resTable__title">
+              <th class="resTable__th">編號</th>
+              <th class="resTable__th">行政區域</th>
+              <th class="resTable__th">鄉鎮區</th>
+              <th class="resTable__th">商家</th>
+              <th class="resTable__th">地址</th>
+            </tr>
+          </thead>
+          <tbody class="resTable__content" id="ResTableContent">
+          </tbody>
+        </table>
+      </div>
+      <nav class="btnList" id="BtnList"></nav>
+    </main>
+    <aside class="sideBar">
+      <figure class="file">
+        <img class="file__img" src="./images/adv1.png" alt="google-pixel4" width="300" height="599">
+      </figure>
+      <figure class="file">
+        <img class="file__img" src="./images/adv2.png" alt="google-pixel4" width="300" height="599">
+      </figure>
+      <figure class="file file-sticky">
+        <img class="file__img" src="./images/adv3.png" alt="google-pixel4" width="300" height="599">
+      </figure>
+    </aside>
+  </div>
+  <footer class="footer">
+
+  </footer>
+
+
+  <script src="./js/main.js">
+  </script>
+</body>
+
+
+</html>
