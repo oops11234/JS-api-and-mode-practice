@@ -21,7 +21,7 @@ body {
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 35px 35px;
+  gap: 30px 30px;
 }
 
 .row {
@@ -35,11 +35,11 @@ body {
 }
 
 .main {
-  width: 74.1%;
+  width: 75%;
 }
 
 .sideBar {
-  width: 25.9%;
+  width: 25%;
   padding-left: 30px;
   box-sizing: border-box;
 }
@@ -307,7 +307,7 @@ body {
 
 .cardRes__text {
   position: absolute;
-  top: 150px;
+  top: 145px;
   padding-left: 15px;
   padding-right: 15px;
   color: #fff;
@@ -349,7 +349,7 @@ body {
 .cardRes__title::after {
   content: '';
   position: absolute;
-  top: 52px;
+  top: 60px;
   left: 15px;
   width: 48px;
   height: 3px;

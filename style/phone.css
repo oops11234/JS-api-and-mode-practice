@@ -17,10 +17,6 @@
     width: 100%;
   }
 
-  .sideBar {
-    display: none;
-  }
-
   .pageList {
     padding-right: 15px;
     padding-left: 15px;
@@ -127,11 +123,11 @@
   }
 
   .cardRes__text {
-    top: 110px;
+    top: 105px;
   }
 
   .cardRes:hover .cardRes__text {
-    top: 45px;
+    top: 40px;
   }
 
   .pageList {

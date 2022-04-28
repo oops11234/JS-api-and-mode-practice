@@ -8,6 +8,7 @@ let curMode = 0;
 const showAmount = 10;
 
 const elemLoadingPage = document.querySelector('#LoadingPage');
+const elemContainer = document.querySelector('#Container');
 const elemCountySelector = document.querySelector('#CountySelector');
 const elemTownSelector = document.querySelector('#TownSelector');
 const elemModeSwitch = document.querySelector('#ModeSwitch');
@@ -89,8 +90,22 @@ const btnTemp = (item, i) => `
           class="${i === curPage ? 'js-pageList__btn' : ''} pageList__btn" data-page="${i}" 
           type="button">${i + 1}</button>`;
 
+const sideBarTemp = (item, i) => `
+        <aside class="sideBar">
+          <figure class="file">
+            <img class="file__img" src="./images/adv1.png" alt="google-pixel4" width="300" height="599">
+          </figure>
+          <figure class="file">
+            <img class="file__img" src="./images/adv2.png" alt="google-pixel4" width="300" height="599">
+          </figure>
+          <figure class="file file-sticky">
+            <img class="file__img" src="./images/adv3.png" alt="google-pixel4" width="300" height="599">
+          </figure>
+        </aside>`;
+
 
 (async () => {
+  sideBarRender();
   setJsonData(await fetchData());
   elemCountySelector.innerHTML += strMaker(optionTemp, setCateData(jsonData, 'City'));
   setInitPageData();
@@ -106,6 +121,28 @@ function setListener() {
   elemPageListContent.addEventListener('click', switchPage);
   elemResTableContent.addEventListener('mouseenter', showFullAdd, true);
   elemResTableContent.addEventListener('mouseleave', showFullAdd, true);
+};
+
+function createSideBar() {
+  const newNode = document.createElement('aside');
+  newNode.setAttribute('class', 'sideBar');
+  newNode.innerHTML = `
+    <figure class="file">
+      <img class="file__img" src="./images/adv1.png" alt="google-pixel4" width="300" height="599">
+    </figure>
+    <figure class="file">
+      <img class="file__img" src="./images/adv2.png" alt="google-pixel4" width="300" height="599">
+    </figure>
+    <figure class="file file-sticky">
+      <img class="file__img" src="./images/adv3.png" alt="google-pixel4" width="300" height="599">
+    </figure>`
+  return newNode;
+};
+function sideBarRender() {
+  const windowWidth = screen.width;
+  if (windowWidth > 414) {
+    elemContainer.appendChild(createSideBar());
+  };
 };
 
 async function fetchData() {
