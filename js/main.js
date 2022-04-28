@@ -11,7 +11,8 @@ const elemLoadingPage = document.querySelector('#LoadingPage');
 const elemCountySelector = document.querySelector('#CountySelector');
 const elemTownSelector = document.querySelector('#TownSelector');
 const elemModeSwitch = document.querySelector('#ModeSwitch');
-const elemContent = document.querySelector('#Content');
+const elemSwitchContent = document.querySelector('#SwitchContent');
+const elemTableContent = document.querySelector('#TableContent');
 const elemResTableContent = document.querySelector('#ResTableContent');
 const elemPageNum = document.querySelector('#PageNum');
 const elemPageListContent = document.querySelector('#PageListContent');
@@ -22,10 +23,11 @@ const limitTableLen = 20;
 const limitCardLen = 50;
 
 const optionTemp = (item) => `<option value="${item}">${item}</option>`;
+
 const listTemp = (item) => `
         <section class="res">
           ${item.Url === '' ? '' : `<a class="res__link" target="_blank" href="${item.Url}">`}
-            <figure class="res__fig res__fig--cover">
+            <figure class="res__fig">
               <img class="res__img"
                 src="${item.PicURL}"
                 alt="${item.Name}" 
@@ -36,55 +38,41 @@ const listTemp = (item) => `
               <h2 class="res__title">${item.Name}</h2>
               <div class="res__info">
                 <p class="res__flag">${item.City}</p>
-                <p class="res__desc res__desc--vertical">${item.Town}</p>
+                <p class="res__desc">${item.Town}</p>
               </div>
               <p class="res__paragh">${textLimit(item.FoodFeature, limitWordLen, '...')}</p>
             </div>
             ${item.Url === '' ? '' : `</a>`}
         </section>`;
-const tableHeadTemp = () => `
-        <table class="resTable">
-          <thead class="resTable__hd">
-            <tr class="resTable__title">
-              <th class="resTable__th">編號</th>
-              <th class="resTable__th">行政區域</th>
-              <th class="resTable__th">鄉鎮區</th>
-              <th class="resTable__th">商家</th>
-              <th class="resTable__th">地址</th>
-            </tr>
-          </thead>
-          <tbody class="resTable__content" id="ResTableContent">
-          </tbody>
-        </table>`;
 
 const tableTemp = (item, i) => `
         <tr class="resTable__row ${i % 2 === 1 ? '' : ' resTable__row--stripe'}">
-                <td class="resTable__td resTable__td--textRight">
+                <td class="resTable__td resTable__td--textRight resTable__td--textGrey">
                   ${curPage * showAmount + i + 1}
                 </td>
-                <td class="resTable__td">
+                <td class="resTable__td resTable__td--fixWidth resTable__td--textGrey">
                   ${item.City}
                 </td>
-                <td class="resTable__td resTable__td--minWidth">
+                <td class="resTable__td resTable__td--minWidth resTable__td--textGrey">
                   ${item.Town}
                 </td>
                 <td class="resTable__td resTable__td--noWrap">
                 ${item.Name}
                 </td>
-                <td class="resTable__td resTable__td--text">
-                  ${textLimit(item.Address, limitTableLen)}
-                  <p class="resTable__hideText">${item.Address}</p>
+                <td class="resTable__td resTable__td--text" data-row="${i}">
+                  ${textLimit(item.Address, limitTableLen, '...')}
+                  
                 </td>
             </tr>`;
 
 const cardTemp = (item) => `
         <section class="grid__item">
           <figure class="cardRes">
-          <img class="res__img"
-            src="${item.PicURL}"
-            alt="${item.Name}" 
-            width="400" 
-            height="267">
+            <img class="cardRes__img"
+              src="${item.PicURL}"
+              alt="${item.Name}" 
+              width="400" 
+              height="267">
             <figcaption class="cardRes__text">
               <div class="cardRes__info">
                 <p class="cardRes__flag">${item.City}</p>
@@ -95,16 +83,17 @@ const cardTemp = (item) => `
             </figcaption>
           </figure>
         </section>`;
-const btnTemp = (item, i) => `<button class="${i === curPage ? 'js-pageList__btn' : ''} pageList__btn" data-page="${i}" type="button">${i + 1}</button>`;
+
+const btnTemp = (item, i) => `
+        <button 
+          class="${i === curPage ? 'js-pageList__btn' : ''} pageList__btn" data-page="${i}" 
+          type="button">${i + 1}</button>`;
 
 
 (async () => {
   setJsonData(await fetchData());
   elemCountySelector.innerHTML += strMaker(optionTemp, setCateData(jsonData, 'City'));
-  const dataArr = setDataArray();
-  dataPagination(dataArr);
-  renderPageNum();
-  elemPageListContent.innerHTML += strMaker(btnTemp, paginationData);
+  setInitPageData();
   modeRender();
   setListener();
   elemLoadingPage.remove();
@@ -115,6 +104,8 @@ function setListener() {
   elemTownSelector.addEventListener('change', selectTownEvent);
   elemModeSwitch.addEventListener('click', switchMode)
   elemPageListContent.addEventListener('click', switchPage);
+  elemResTableContent.addEventListener('mouseenter', showFullAdd, true);
+  elemResTableContent.addEventListener('mouseleave', showFullAdd, true);
 };
 
 async function fetchData() {
@@ -135,20 +126,27 @@ function setJsonData(result) {
 function modeRender() {
   switch (curMode) {
     case 0:
-      elemContent.classList.remove('grid');
-      elemContent.innerHTML = strMaker(listTemp, paginationData[curPage]);
+      elemSwitchContent.style.display = 'block';
+      elemTableContent.style.display = 'none';
+      elemSwitchContent.classList.remove('grid');
+      elemSwitchContent.innerHTML = strMaker(listTemp, paginationData[curPage]);
       break;
     case 1:
-      elemResTableContent.innerHTML += strMaker(tableTemp, paginationData[curPage]);
+      elemSwitchContent.style.display = 'none';
+      elemTableContent.style.display = 'block';;
+      elemSwitchContent.classList.remove('grid');
+      elemResTableContent.innerHTML = strMaker(tableTemp, paginationData[curPage]);
       break;
     case 2:
-      elemContent.classList.add('grid');
-      elemContent.innerHTML = strMaker(cardTemp, paginationData[curPage]);
+      elemSwitchContent.style.display = 'grid';
+      elemTableContent.style.display = 'none';
+      elemSwitchContent.classList.add('grid');
+      elemSwitchContent.innerHTML = strMaker(cardTemp, paginationData[curPage]);
       break;
     default:
       break;
-  }
-}
+  };
+};
 
 function renderPageNum() {
   elemPageNum.textContent = `${curPage + 1} / ${paginationData.length}`;
@@ -178,7 +176,7 @@ function strMaker(temp, data, str = '') {
   return str;
 };
 
-function setDataArray(arr = []) {
+function arrayFilter(arr = []) {
   if (currentCityData !== '' && currentTownData !== '') {
     arr = jsonData.filter(item =>
       item.City === currentCityData && item.Town === currentTownData);
@@ -199,10 +197,10 @@ function textLimit(str, length, symbol, limitStr = '') {
   return str;
 };
 
-function setInitPageData(dataArr = []) {
+function setInitPageData(filteredArr = []) {
   curPage = 0;
-  dataArr = setDataArray();
-  dataPagination(dataArr);
+  filteredArr = arrayFilter();
+  dataPagination(filteredArr);
   renderPageNum();
   elemPageListContent.innerHTML = strMaker(btnTemp, paginationData);
 };
@@ -232,6 +230,23 @@ function switchMode(e) {
     curMode = modeIndex;
     modeRender();
     self.classList.add('js-nav__switchBtn');
+  };
+};
+
+function createNode(i) {
+  const newNode = document.createElement('p');
+  newNode.setAttribute('class', 'resTable__hideText');
+  newNode.textContent = paginationData[curPage][i].Address;
+  return newNode;
+};
+
+function showFullAdd(e) {
+  const self = e.target;
+  const rowNum = parseInt(self.dataset.row, 10);
+  if (self.nodeName === 'TD' && !isNaN(rowNum)) {
+    (e.type === 'mouseenter')
+      ? self.appendChild(createNode(rowNum))
+      : self.lastElementChild.remove();
   };
 };
 

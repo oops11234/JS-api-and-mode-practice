@@ -12,7 +12,7 @@
   <link rel="icon" href="./favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="stylesheet" href="./style/main.css">
-  <!-- <link rel="stylesheet" href="./style/phone.css" media="screen and (max-width: 414px)"> -->
+  <link rel="stylesheet" href="./style/phone.css" media="screen and (max-width: 414px)">
 </head>
 
 <body>
@@ -48,20 +48,25 @@
           </div>
         </div>
       </nav>
-      <div class="content grid" id="Content">
-        <!-- <table class="resTable">
-          <thead class="resTable__hd">
-            <tr class="resTable__title">
-              <th class="resTable__th">編號</th>
-              <th class="resTable__th">行政區域</th>
-              <th class="resTable__th">鄉鎮區</th>
-              <th class="resTable__th">商家</th>
-              <th class="resTable__th">地址</th>
-            </tr>
-          </thead>
-          <tbody class="resTable__content" id="ResTableContent">
-          </tbody>
-        </table> -->
+      <div class="content">
+        <div class="swicthContent" id="SwitchContent">
+
+        </div>
+        <div class="tableContent" id="TableContent">
+          <table class="resTable" id="ResTable">
+            <thead class="resTable__hd">
+              <tr class="resTable__title">
+                <th class="resTable__th">編號</th>
+                <th class="resTable__th">行政區域</th>
+                <th class="resTable__th">鄉鎮區</th>
+                <th class="resTable__th">商家</th>
+                <th class="resTable__th">地址</th>
+              </tr>
+            </thead>
+            <tbody class="resTable__content" id="ResTableContent">
+            </tbody>
+          </table>
+        </div>
       </div>
       <nav class="pageList">
         <p class="pageList__text">美食頁次 <span class="pageList__number" id="PageNum">4/14</span></p>
