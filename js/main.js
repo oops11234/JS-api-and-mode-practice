@@ -1,5 +1,19 @@
 const jsonData = [];
 let paginationData = [];
+const adData = [
+  {
+    'name': 'adv1.png',
+    'alt': 'google-pixel4',
+  },
+  {
+    'name': 'adv2.png',
+    'alt': '飆股狙擊室',
+  },
+  {
+    'name': 'adv3.png',
+    'alt': '森聯摩天41',
+  }
+];
 
 let currentCityData = '';
 let currentTownData = '';
@@ -7,16 +21,18 @@ let curPage = 0;
 let curMode = 0;
 const showAmount = 10;
 
-const elemLoadingPage = document.querySelector('#LoadingPage');
-const elemContainer = document.querySelector('#Container');
+
 const elemCountySelector = document.querySelector('#CountySelector');
 const elemTownSelector = document.querySelector('#TownSelector');
 const elemModeSwitch = document.querySelector('#ModeSwitch');
-const elemSwitchContent = document.querySelector('#SwitchContent');
+const elemPageListContent = document.querySelector('#PageListContent');
+
+const elemLoadingPage = document.querySelector('#LoadingPage');
+const elemContainer = document.querySelector('#Container');
+const elemContent = document.querySelector('#Content');
 const elemTableContent = document.querySelector('#TableContent');
 const elemResTableContent = document.querySelector('#ResTableContent');
 const elemPageNum = document.querySelector('#PageNum');
-const elemPageListContent = document.querySelector('#PageListContent');
 
 const dataUrl = 'https://data.coa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelFood.aspx';
 const limitWordLen = 101;
@@ -46,7 +62,23 @@ const listTemp = (item) => `
             ${item.Url === '' ? '' : `</a>`}
         </section>`;
 
-const tableTemp = (item, i) => `
+const tableTemp = () => `
+        <table class="resTable" id="ResTable">
+            <thead class="resTable__hd">
+            <tr class="resTable__title">
+              <th class="resTable__th">編號</th>
+              <th class="resTable__th">行政區域</th>
+              <th class="resTable__th">鄉鎮區</th>
+              <th class="resTable__th">商家</th>
+              <th class="resTable__th">地址</th>
+            </tr>
+          </thead>
+          <tbody class="resTable__content" id="ResTableContent">
+          ${strMaker(rowTemp, paginationData[curPage])}
+          </tbody>
+        </table>`;
+
+const rowTemp = (item, i) => `
         <tr class="resTable__row ${i % 2 === 1 ? '' : ' resTable__row--stripe'}">
                 <td class="resTable__td resTable__td--textRight resTable__td--textGrey">
                   ${curPage * showAmount + i + 1}
@@ -60,9 +92,8 @@ const tableTemp = (item, i) => `
                 <td class="resTable__td resTable__td--noWrap">
                 ${item.Name}
                 </td>
-                <td class="resTable__td resTable__td--text" data-row="${i}">
+                <td class="resTable__td resTable__td--text" data-row="${i}" title="${item.Address}">
                   ${textLimit(item.Address, limitTableLen, '...')}
-                  
                 </td>
             </tr>`;
 
@@ -90,18 +121,10 @@ const btnTemp = (item, i) => `
           class="${i === curPage ? 'js-pageList__btn' : ''} pageList__btn" data-page="${i}" 
           type="button">${i + 1}</button>`;
 
-const sideBarTemp = (item, i) => `
-        <aside class="sideBar">
+const sideBarTemp = (item) => `
           <figure class="file">
-            <img class="file__img" src="./images/adv1.png" alt="google-pixel4" width="300" height="599">
-          </figure>
-          <figure class="file">
-            <img class="file__img" src="./images/adv2.png" alt="google-pixel4" width="300" height="599">
-          </figure>
-          <figure class="file file-sticky">
-            <img class="file__img" src="./images/adv3.png" alt="google-pixel4" width="300" height="599">
-          </figure>
-        </aside>`;
+            <img class="file__img" src="./images/${item.name}" alt="${item.alt}" width="300" height="599">
+          </figure>`;
 
 
 (async () => {
@@ -117,27 +140,17 @@ const sideBarTemp = (item, i) => `
 function setListener() {
   elemCountySelector.addEventListener('change', selectCountyEvent);
   elemTownSelector.addEventListener('change', selectTownEvent);
-  elemModeSwitch.addEventListener('click', switchMode)
+  elemModeSwitch.addEventListener('click', switchMode);
   elemPageListContent.addEventListener('click', switchPage);
-  elemResTableContent.addEventListener('mouseenter', showFullAdd, true);
-  elemResTableContent.addEventListener('mouseleave', showFullAdd, true);
 };
 
 function createSideBar() {
   const newNode = document.createElement('aside');
   newNode.setAttribute('class', 'sideBar');
-  newNode.innerHTML = `
-    <figure class="file">
-      <img class="file__img" src="./images/adv1.png" alt="google-pixel4" width="300" height="599">
-    </figure>
-    <figure class="file">
-      <img class="file__img" src="./images/adv2.png" alt="google-pixel4" width="300" height="599">
-    </figure>
-    <figure class="file file-sticky">
-      <img class="file__img" src="./images/adv3.png" alt="google-pixel4" width="300" height="599">
-    </figure>`
+  newNode.innerHTML = strMaker(sideBarTemp, adData)
   return newNode;
 };
+
 function sideBarRender() {
   const windowWidth = screen.width;
   if (windowWidth > 414) {
@@ -163,22 +176,16 @@ function setJsonData(result) {
 function modeRender() {
   switch (curMode) {
     case 0:
-      elemSwitchContent.style.display = 'block';
-      elemTableContent.style.display = 'none';
-      elemSwitchContent.classList.remove('grid');
-      elemSwitchContent.innerHTML = strMaker(listTemp, paginationData[curPage]);
+      elemContent.classList.remove('grid');
+      elemContent.innerHTML = strMaker(listTemp, paginationData[curPage]);
       break;
     case 1:
-      elemSwitchContent.style.display = 'none';
-      elemTableContent.style.display = 'block';;
-      elemSwitchContent.classList.remove('grid');
-      elemResTableContent.innerHTML = strMaker(tableTemp, paginationData[curPage]);
+      elemContent.classList.remove('grid');
+      elemContent.innerHTML = tableTemp();
       break;
     case 2:
-      elemSwitchContent.style.display = 'grid';
-      elemTableContent.style.display = 'none';
-      elemSwitchContent.classList.add('grid');
-      elemSwitchContent.innerHTML = strMaker(cardTemp, paginationData[curPage]);
+      elemContent.classList.add('grid');
+      elemContent.innerHTML = strMaker(cardTemp, paginationData[curPage]);
       break;
     default:
       break;
@@ -235,7 +242,6 @@ function textLimit(str, length, symbol, limitStr = '') {
 };
 
 function setInitPageData(filteredArr = []) {
-  curPage = 0;
   filteredArr = arrayFilter();
   dataPagination(filteredArr);
   renderPageNum();
@@ -246,17 +252,19 @@ function selectCountyEvent(e) {
   const self = e.target;
   currentCityData = self.value;
   currentTownData = '';
+  curPage = 0;
   setInitPageData();
   elemTownSelector.innerHTML = `<option value="" disabled selected>請選擇鄉鎮區...</option>;`;
   elemTownSelector.innerHTML += strMaker(optionTemp, setCateData(paginationData[curPage], 'Town'));
-  modeRender()
+  modeRender();
 };
 
 function selectTownEvent(e) {
   const self = e.target;
   currentTownData = self.value;
+  curPage = 0;
   setInitPageData();
-  modeRender()
+  modeRender();
 };
 
 function switchMode(e) {
@@ -270,30 +278,13 @@ function switchMode(e) {
   };
 };
 
-function createNode(i) {
-  const newNode = document.createElement('p');
-  newNode.setAttribute('class', 'resTable__hideText');
-  newNode.textContent = paginationData[curPage][i].Address;
-  return newNode;
-};
-
-function showFullAdd(e) {
-  const self = e.target;
-  const rowNum = parseInt(self.dataset.row, 10);
-  if (self.nodeName === 'TD' && !isNaN(rowNum)) {
-    (e.type === 'mouseenter')
-      ? self.appendChild(createNode(rowNum))
-      : self.lastElementChild.remove();
-  };
-};
-
 function switchPage(e) {
   const self = e.target;
   const pageIndex = parseInt(self.dataset.page, 10)
   if (self.nodeName === 'BUTTON' && pageIndex !== curPage) {
     elemPageListContent.children[curPage].classList.remove('js-pageList__btn');
     curPage = pageIndex;
-    modeRender()
+    modeRender();
     self.classList.add('js-pageList__btn');
     renderPageNum();
   };

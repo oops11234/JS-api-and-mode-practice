@@ -13,8 +13,13 @@
     padding-left: 15px;
   }
 
+  .row {
+    min-height: calc(100vh - 150px);
+  }
+
   .main {
     width: 100%;
+
   }
 
   .pageList {
@@ -56,6 +61,10 @@
   }
 
   /* list */
+  .content {
+    overflow: auto;
+  }
+
   .res,
   .res__link {
     display: block;
@@ -108,10 +117,6 @@
   }
 
   /* Table Mode */
-  .tableContent {
-    width: 100%;
-    overflow: auto;
-  }
 
   .resTable {
     width: 100%;

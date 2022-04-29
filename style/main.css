@@ -116,7 +116,7 @@ body {
   color: #000;
 }
 
-.swicthContent {
+.content {
   padding-top: 15px;
 }
 
@@ -204,10 +204,6 @@ body {
 }
 
 /* Table Mode */
-.tableContent {
-  display: none;
-  padding-top: 15px;
-}
 
 .resTable {
   width: 100%;
@@ -272,7 +268,8 @@ body {
   position: relative;
 }
 
-.resTable__hideText {
+.resTable__td--text:hover::after {
+  content: attr(title);
   position: absolute;
   top: 32px;
   left: 22px;
