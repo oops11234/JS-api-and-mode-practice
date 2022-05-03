@@ -1,20 +1,23 @@
-const jsonData = [];
-let paginationData = [];
-const adData = [
-  {
-    'name': 'adv1.png',
-    'alt': 'google-pixel4',
-  },
-  {
-    'name': 'adv2.png',
-    'alt': '飆股狙擊室',
-  },
-  {
-    'name': 'adv3.png',
-    'alt': '森聯摩天41',
-  }
-];
+const data = {
+  jsonData: [],
+  pagedData: [],
+  adData: [
+    {
+      'name': 'adv1.png',
+      'alt': 'google-pixel4',
+    },
+    {
+      'name': 'adv2.png',
+      'alt': '飆股狙擊室',
+    },
+    {
+      'name': 'adv3.png',
+      'alt': '森聯摩天41',
+    }
+  ],
+};
 
+let paginationData = [];
 let currentCityData = '';
 let currentTownData = '';
 let curPage = 0;
@@ -29,9 +32,7 @@ const elemPageListContent = document.querySelector('#PageListContent');
 
 const elemLoadingPage = document.querySelector('#LoadingPage');
 const elemContainer = document.querySelector('#Container');
-const elemContent = document.querySelector('#Content');
-const elemTableContent = document.querySelector('#TableContent');
-const elemResTableContent = document.querySelector('#ResTableContent');
+const elemScreen = document.querySelector('#Screen');
 const elemPageNum = document.querySelector('#PageNum');
 
 const dataUrl = 'https://data.coa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelFood.aspx';
@@ -41,7 +42,12 @@ const limitCardLen = 50;
 
 const optionTemp = (item) => `<option value="${item}">${item}</option>`;
 
-const listTemp = (item) => `
+const listTemp = () => `
+        <div class="content">
+        ${strMaker(listRow, paginationData[curPage])}
+        </div>`;
+
+const listRow = (item) => `
         <section class="res">
           ${item.Url === '' ? '' : `<a class="res__link" target="_blank" href="${item.Url}">`}
             <figure class="res__fig">
@@ -63,22 +69,24 @@ const listTemp = (item) => `
         </section>`;
 
 const tableTemp = () => `
-        <table class="resTable" id="ResTable">
-            <thead class="resTable__hd">
-            <tr class="resTable__title">
-              <th class="resTable__th">編號</th>
-              <th class="resTable__th">行政區域</th>
-              <th class="resTable__th">鄉鎮區</th>
-              <th class="resTable__th">商家</th>
-              <th class="resTable__th">地址</th>
-            </tr>
-          </thead>
-          <tbody class="resTable__content" id="ResTableContent">
-          ${strMaker(rowTemp, paginationData[curPage])}
-          </tbody>
-        </table>`;
+        <div class="content">
+          <table class="resTable" id="ResTable">
+              <thead class="resTable__hd">
+              <tr class="resTable__title">
+                <th class="resTable__th">編號</th>
+                <th class="resTable__th">行政區域</th>
+                <th class="resTable__th">鄉鎮區</th>
+                <th class="resTable__th">商家</th>
+                <th class="resTable__th">地址</th>
+              </tr>
+            </thead>
+            <tbody class="resTable__content" id="ResTableContent">
+            ${strMaker(tableRow, paginationData[curPage])}
+            </tbody>
+          </table>
+        </div>`;
 
-const rowTemp = (item, i) => `
+const tableRow = (item, i) => `
         <tr class="resTable__row ${i % 2 === 1 ? '' : ' resTable__row--stripe'}">
                 <td class="resTable__td resTable__td--textRight resTable__td--textGrey">
                   ${curPage * showAmount + i + 1}
@@ -97,7 +105,12 @@ const rowTemp = (item, i) => `
                 </td>
             </tr>`;
 
-const cardTemp = (item) => `
+const cardTemp = () => `
+        <div class="content grid">
+        ${strMaker(cardRow, paginationData[curPage])}
+        </div>`;
+
+const cardRow = (item) => `
         <section class="grid__item">
           <figure class="cardRes">
             <img class="cardRes__img"
@@ -126,11 +139,10 @@ const sideBarTemp = (item) => `
             <img class="file__img" src="./images/${item.name}" alt="${item.alt}" width="300" height="599">
           </figure>`;
 
-
 (async () => {
   sideBarRender();
-  setJsonData(await fetchData());
-  elemCountySelector.innerHTML += strMaker(optionTemp, setCateData(jsonData, 'City'));
+  data.jsonData = await fetchData();
+  elemCountySelector.innerHTML += strMaker(optionTemp, setCateData(data.jsonData, 'City'));
   setInitPageData();
   modeRender();
   setListener();
@@ -140,22 +152,8 @@ const sideBarTemp = (item) => `
 function setListener() {
   elemCountySelector.addEventListener('change', selectCountyEvent);
   elemTownSelector.addEventListener('change', selectTownEvent);
-  elemModeSwitch.addEventListener('click', switchMode);
-  elemPageListContent.addEventListener('click', switchPage);
-};
-
-function createSideBar() {
-  const newNode = document.createElement('aside');
-  newNode.setAttribute('class', 'sideBar');
-  newNode.innerHTML = strMaker(sideBarTemp, adData)
-  return newNode;
-};
-
-function sideBarRender() {
-  const windowWidth = screen.width;
-  if (windowWidth > 414) {
-    elemContainer.appendChild(createSideBar());
-  };
+  elemModeSwitch.addEventListener('click', clickToSwitchMode);
+  elemPageListContent.addEventListener('click', clickToSwitchPage);
 };
 
 async function fetchData() {
@@ -167,25 +165,30 @@ async function fetchData() {
   };
 };
 
-function setJsonData(result) {
-  result.forEach(item => {
-    jsonData.push(item);
-  });
+function createSideBar() {
+  const newNode = document.createElement('aside');
+  newNode.setAttribute('class', 'sideBar');
+  newNode.innerHTML = strMaker(sideBarTemp, data.adData)
+  return newNode;
+};
+
+function sideBarRender() {
+  const windowWidth = screen.width;
+  if (windowWidth > 414) {
+    elemContainer.appendChild(createSideBar());
+  };
 };
 
 function modeRender() {
   switch (curMode) {
     case 0:
-      elemContent.classList.remove('grid');
-      elemContent.innerHTML = strMaker(listTemp, paginationData[curPage]);
+      elemScreen.innerHTML = listTemp();
       break;
     case 1:
-      elemContent.classList.remove('grid');
-      elemContent.innerHTML = tableTemp();
+      elemScreen.innerHTML = tableTemp();
       break;
     case 2:
-      elemContent.classList.add('grid');
-      elemContent.innerHTML = strMaker(cardTemp, paginationData[curPage]);
+      elemScreen.innerHTML = cardTemp();
       break;
     default:
       break;
@@ -222,13 +225,13 @@ function strMaker(temp, data, str = '') {
 
 function arrayFilter(arr = []) {
   if (currentCityData !== '' && currentTownData !== '') {
-    arr = jsonData.filter(item =>
+    arr = data.jsonData.filter(item =>
       item.City === currentCityData && item.Town === currentTownData);
   } else if (currentCityData !== '') {
-    arr = jsonData.filter(item =>
+    arr = data.jsonData.filter(item =>
       item.City === currentCityData);
   } else {
-    arr = jsonData;
+    arr = data.jsonData;
   };
   return arr;
 };
@@ -267,9 +270,9 @@ function selectTownEvent(e) {
   modeRender();
 };
 
-function switchMode(e) {
+function clickToSwitchMode(e) {
   const self = e.target.parentNode;
-  const modeIndex = parseInt(self.dataset.mode, 10)
+  const modeIndex = parseInt(self.dataset.mode, 10);
   if (self.nodeName === 'BUTTON' && modeIndex !== curMode) {
     elemModeSwitch.children[curMode].classList.remove('js-nav__switchBtn');
     curMode = modeIndex;
@@ -278,9 +281,9 @@ function switchMode(e) {
   };
 };
 
-function switchPage(e) {
+function clickToSwitchPage(e) {
   const self = e.target;
-  const pageIndex = parseInt(self.dataset.page, 10)
+  const pageIndex = parseInt(self.dataset.page, 10);
   if (self.nodeName === 'BUTTON' && pageIndex !== curPage) {
     elemPageListContent.children[curPage].classList.remove('js-pageList__btn');
     curPage = pageIndex;
