@@ -84,10 +84,6 @@
     padding-top: 15px;
   }
 
-  .pageList__text {
-    display: none;
-  }
-
   .res__info {
     position: static;
     display: flex;
@@ -143,6 +139,10 @@
   .pageList__btn {
     margin-top: 10px;
     margin-right: 10px;
+  }
+
+  .pageList__text {
+    display: none;
   }
 
   .pageList__btn+.pageList__btn {
