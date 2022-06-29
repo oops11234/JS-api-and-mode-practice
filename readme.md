@@ -5,10 +5,10 @@
 ```
 * Fetch API from Open Source(government).
 * DOM manipulate and template render.
-* three kinds mode switch(card,list and table).
-* conditional render data with select value.
-* conditional render hyperLink.
+* Three kinds mode switch(card,list and table).
+* Conditional render data with select value.
+* Conditional render hyperLink.
 * Advertiser Render in specific window width.
-* paginated data.
+* Paginating data.
 * CSS transition and user Interface
 ```
